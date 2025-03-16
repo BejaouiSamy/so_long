@@ -78,11 +78,14 @@ int validate_map(t_game *game);
 void free_map(t_map *map);
 void free_game(t_game *game);
 void free_textures(t_game *game);
-void count_map_elements(t_game *game, char *line);
+void count_map_elements(t_game *game, char *line, int y);
 
 // Checking path
 void enqueue(t_queue **queue, int x, int y);
 void dequeue(t_queue **queue);
 int is_valid_position(t_map *map, int x, int y, char **visited);
 int check_path(t_game *game);
+
+//Debug
+
 # endif

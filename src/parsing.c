@@ -1,7 +1,7 @@
 #include "../Includes/so_long.h"
 
 
-void count_map_elements(t_game *game, char *line)
+void count_map_elements(t_game *game, char *line, int y)
 {
     int i;
 
@@ -13,7 +13,11 @@ void count_map_elements(t_game *game, char *line)
         else if (line[i] == 'E') // Exit
             game->map->exit++;
         else if (line[i] == 'P') // Player
+        {
             game->map->player++;
+            game->player.x = i;
+            game->player.y = y;
+        }
         i++;
     }
 }
@@ -24,6 +28,17 @@ int checks_wall(t_game *game)
     int y;
 
     x = 0;
+    /* Debug
+    printf("Dimensions de la carte : %d x %d\n", game->map->width, game->map->height);
+    printf("Premier caractère : '%c'\n", game->map->grid[0][0]);
+    printf("Deuxième caractère : '%c'\n", game->map->grid[0][1]);
+    printf("Troisième caractère : '%c'\n", game->map->grid[0][2]);
+    for (int i = 0; i < game->map->width; i++) {
+        printf("Ligne 1, Position %d: '%c' (ASCII: %d)\n", i + 1, game->map->grid[0][i], game->map->grid[0][i]);
+        if (game->map->grid[0][i] != '1') {
+            printf("Erreur détectée à Ligne 1, Position %d\n", i + 1);
+        }
+    }*/
     // Vérifier la première et la dernière ligne
     while (x < game->map->width)
     {
@@ -67,9 +82,6 @@ int checks_wall(t_game *game)
 
     return (1); // La carte est bien entourée de murs
 }
-
-
-
 
 int parse_map(t_game *game, char *filename)
 {
@@ -139,7 +151,7 @@ int add_line_to_map(t_game *game, char *line)
         ft_putstr("La map n'est pas rectangulaire");
         return (0);
     }
-    // Alloueur une nouvelle grille pour ajouter la ligne
+    // Allouer une nouvelle grille pour ajouter la ligne
     new_grid = malloc(sizeof(char *) * (game->map->height + 2));
     if (!new_grid)
     {
@@ -151,7 +163,7 @@ int add_line_to_map(t_game *game, char *line)
     i = 0;
     while (i < game->map->height)
     {
-        *new_grid = game->map->grid[i];
+        new_grid[i] = game->map->grid[i];
         i++;
     }
 
@@ -165,7 +177,7 @@ int add_line_to_map(t_game *game, char *line)
     game->map->height++;
 
     // Compter les elements importants
-    count_map_elements(game, new_grid[game->map->height - 1]);
+    count_map_elements(game, new_grid[game->map->height - 1], game->map->height - 1);
     return (1);
 }
 

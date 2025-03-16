@@ -12,9 +12,24 @@ int load_textures(t_game *game)
     game->textures.floor = mlx_xpm_file_to_image(game->mlx,
             "textures/backroom_floor.xpm", &width, &height);
     game->textures.collectible = mlx_xpm_file_to_image(game->mlx,
-            "textures/cheese_burger.xpm", &width, &height);
- game->textures.exit = mlx_xpm_file_to_image(game->mlx,
+            "textures/cheese-burger.xpm", &width, &height);
+    if (!game->textures.collectible)
+        ft_putstr("❌ ERREUR: Impossible de charger cheese-burger.xpm\n");
+    else
+        ft_putstr("✅ Texture cheese-burger.xpm chargée avec succès\n");
+    game->textures.exit = mlx_xpm_file_to_image(game->mlx,
             "textures/mic.xpm", &width, &height);
+    if (!game->textures.exit)
+        ft_putstr("❌ ERREUR: Impossible de charger mic.xpm\n");
+    else
+        ft_putstr("✅ Texture mic.xpm chargée avec succès\n");
+
+    ft_putstr("Taille texture mur : ");
+    ft_putnbr(width);
+    ft_putstr(" x ");
+    ft_putnbr(height);
+    ft_putstr("\n");
+
     // Chargement de plusieurs textures
     char *player_textures[] = {
         "textures/doom_1.xpm", "textures/doom_2.xpm", "textures/doom_3.xpm",
@@ -22,12 +37,15 @@ int load_textures(t_game *game)
         "textures/doom_7.xpm", "textures/doom_8.xpm", "textures/doom_9.xpm",
         "textures/doom_10.xpm"
     };
-
     i = 0;
     while(i < 10)
     {
         game->textures.player_frames[i] = mlx_xpm_file_to_image
             (game->mlx, player_textures[i], &width, &height);
+        if (!game->textures.player_frames[i])
+            ft_putstr("❌ ERREUR: Impossible de charger doom.xpm\n");
+        else
+            ft_putstr("✅ Texture dooom.xpm chargée avec succès\n");
         i++;
     }
     // Verifier si toutes les textures ont ete chargees
@@ -91,8 +109,10 @@ void draw_map(t_game *game)
 
 int animate_player(t_game *game)
 {
-    static int frame_delay = 0;
-
+    static int frame_delay;
+    
+    frame_delay = 0;
+    game->current_frame = 0;
     // Limiter la vitesse de l'animation (change d'image toutes les 10 itérations)
     if (frame_delay++ < 10)
         return (0);

@@ -45,17 +45,44 @@ int is_valid_position(t_map *map, int x, int y, char **visited)
 // Vérifier si tous les collectibles et la sortie sont accessibles
 int check_path(t_game *game)
 {
-    int x, y, collectibles_found = 0, exit_found = 0;
+    int x;
+    int y;
+    int collectibles_found;
+    int exit_found;
     char **visited;
+    int i;
+
+    collectibles_found = 0;
+    exit_found = 0;
+
+    printf("Dimensions de la carte: %d x %d\n", game->map->width, game->map->height);
+    printf("Position du joueur: (%d, %d)\n", game->player.x, game->player.y);
+    printf("Nombre de collectibles attendus: %d\n", game->map->collectibles);
+    printf("Nombre de sorties attendus: %d\n", game->map->exit);
+
+    // Au début de check_path
+    /*if (game->player.x == 0 && game->player.y == 0)
+    {
+        // Si ces valeurs sont 0, c'est peut-être qu'elles n'ont jamais été initialisées
+        printf("ATTENTION: Position du joueur non initialisée ou à l'origine (0,0)\n");
+        // Parcourir la carte pour trouver le joueur
+        find_player_position(game);
+    }*/
     t_queue *queue = NULL;
 
     // Allouer et initialiser le tableau de cases visitées
     visited = malloc(sizeof(char *) * game->map->height);
-    for (y = 0; y < game->map->height; y++)
+    y = 0;
+    while (y < game->map->height)
     {
         visited[y] = malloc(sizeof(char) * game->map->width);
-        for (x = 0; x < game->map->width; x++)
+        x = 0;
+        while (x < game->map->width)
+        {
             visited[y][x] = 0;
+            x++;
+        }
+        y++;
     }
 
     // Ajouter le joueur à la file d'attente
@@ -81,7 +108,8 @@ int check_path(t_game *game)
             exit_found = 1;
 
         // Explorer les 4 directions
-        for (int i = 0; i < 4; i++)
+        i = 0;
+        while (i < 4)
         {
             int new_x = x + dx[i];
             int new_y = y + dy[i];
@@ -91,12 +119,17 @@ int check_path(t_game *game)
                 enqueue(&queue, new_x, new_y);
                 visited[new_y][new_x] = 1;
             }
+            i++;
         }
     }
 
     // Libérer la mémoire du tableau de visite
-    for (y = 0; y < game->map->height; y++)
+    y = 0;
+    while (y < game->map->height)
+    {
         free(visited[y]);
+        y++;
+    }
     free(visited);
 
     // Vérifier si tous les collectibles et la sortie sont accessibles
@@ -106,3 +139,22 @@ int check_path(t_game *game)
     ft_putstr("Erreur: Chemin invalide, certains objets sont inaccessibles.\n");
     return (0);
 }
+
+// Exemple d'une fonction pour trouver le joueur
+/*void find_player_position(t_game *game)
+{
+    for (int y = 0; y < game->map->height; y++)
+    {
+        for (int x = 0; x < game->map->width; x++)
+        {
+            if (game->map->grid[y][x] == 'P')
+            {
+                game->player.x = x;
+                game->player.y = y;
+                printf("Joueur trouvé à la position (%d, %d)\n", x, y);
+                return;
+            }
+        }
+    }
+    ft_putstr("Erreur: Aucun joueur trouvé dans la carte\n");
+}*/
