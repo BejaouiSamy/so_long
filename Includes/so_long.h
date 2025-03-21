@@ -15,6 +15,7 @@ typedef struct s_map
     int height;
     int collectibles;
     int exit;
+    int exit_count;
     int player;
 } t_map;
 
@@ -23,8 +24,8 @@ typedef struct s_textures
     void *wall;
     void *floor;
     void *collectible;
-    void *exit;
-    void *player_frames[10]; // frame du joueur
+    void *player;
+    void *exit_frames[6];
 } t_textures;
 
 typedef struct s_player
@@ -33,6 +34,8 @@ typedef struct s_player
     int y;
     int moves;
     int collected;
+    int direction;
+    int current_frame;
 } t_player;
 
 typedef struct s_game
@@ -42,7 +45,8 @@ typedef struct s_game
     t_map *map;
     t_textures textures;
     t_player player;
-    int current_frame; // Indice de frame actuel du joueur
+    t_player exit;
+    int exit_current_frame; // Indice de frame de sortie
 } t_game;
 
 // Structure pour la file d'attente BFS
@@ -56,6 +60,8 @@ typedef struct s_queue
 int load_textures(t_game *game);
 void draw_map(t_game *game);
 int animate_player(t_game *game);
+int animate_exit(t_game *game);
+int game_loop(t_game *game);
 
 // Gestion de `get_next_line`
 int ft_strlen_until(char *str, char c);
@@ -85,7 +91,5 @@ void enqueue(t_queue **queue, int x, int y);
 void dequeue(t_queue **queue);
 int is_valid_position(t_map *map, int x, int y, char **visited);
 int check_path(t_game *game);
-
-//Debug
 
 # endif

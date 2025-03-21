@@ -11,7 +11,13 @@ void count_map_elements(t_game *game, char *line, int y)
         if (line[i] == 'C') // Collectible
             game->map->collectibles++;
         else if (line[i] == 'E') // Exit
+        {
             game->map->exit++;
+            game->map->exit_count++;
+            game->exit.x = i;
+            game->exit.y = y;
+            printf("✅ Sortie trouvée en (%d, %d)\n", i, y);
+        }
         else if (line[i] == 'P') // Player
         {
             game->map->player++;
@@ -132,10 +138,15 @@ int add_line_to_map(t_game *game, char *line)
 {
     int i;
     char **new_grid;
+    char *clean_line;
 
     // Ignorer les lignes vides a la fin du fichier
     if (line[0] == '\0' || line[0] == '\n')
         return (1);
+
+    clean_line = ft_strdup(line);
+    if (!clean_line)
+        return (0);
 
     // Remplacer '\n' par '\0'
     i = 0;
@@ -149,6 +160,7 @@ int add_line_to_map(t_game *game, char *line)
     else if (game->map->width != i)
     {
         ft_putstr("La map n'est pas rectangulaire");
+        free(clean_line);
         return (0);
     }
     // Allouer une nouvelle grille pour ajouter la ligne
@@ -156,6 +168,7 @@ int add_line_to_map(t_game *game, char *line)
     if (!new_grid)
     {
         ft_putstr("Erreur d'allocation memoire");
+        free(clean_line);
         return (0);
     }
 
@@ -221,11 +234,14 @@ void free_map(t_map *map)
 
     if (!map)
         return;
-
+    i = 0;
     if (map->grid)
     {
-        for (i = 0; i < map->height; i++)
+        while(i < map->height)
+        {
             free(map->grid[i]);
+            i++;
+        }
         free(map->grid);
     }
     free(map);

@@ -63,7 +63,4 @@ fclean: clean
 # Recompilation complète
 re: fclean all
 
-# Gestion d'une version bonus (ajoute tes fichiers bonus dans `SRC_BONUS`)
-bonus: all
-
 .PHONY: all clean fclean re bonus
