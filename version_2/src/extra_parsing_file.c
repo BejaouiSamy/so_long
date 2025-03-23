@@ -1,6 +1,6 @@
 #include "../Includes/so_long.h"
 
-int checks_horizontal_walls(t_game *game)
+int check_horizontal_walls(t_game *game)
 {
     int x;
 
@@ -54,7 +54,7 @@ int check_vertical_walls(t_game *game)
     return (1);
 }
 
-int read_map_file(t_game *game, char *fd)
+int read_map_file(t_game *game, int fd)
 {
     char *line;
 
@@ -78,7 +78,6 @@ int init_map_structures(t_game *game)
     if(!game->map)
     {
         ft_putstr("Erreur d'allocation memoire");
-        close(fd);
         return(0);
     }
     // Initialiser les variables de map

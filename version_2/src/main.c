@@ -24,41 +24,20 @@ void free_textures(t_game *game)
     }
 }
 
-
-void free_game(t_game *game)
-{
-    if (!game)
-        return;
-    
-    if (game->map)
-        free_map(game->map);
-    
-    free_textures(game);
-
-    if (game->win)
-        mlx_destroy_window(game->mlx, game->win);
-    
-    if (game->mlx)
-    {
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-    }
-}
-
 int close_window(t_game *game)
 {
     free_game(game);
     exit(0);
 }
 
-int game_loop(t_game *game)
+/*int game_loop(t_game *game)
 {
     // Appeler les différentes animations
     //animate_player(game);
     animate_exit(game);
     
     return (0);
-}
+}*/
 
 
 #include "../Includes/so_long.h"
@@ -118,7 +97,7 @@ int main(int argc, char **argv)
     draw_map(&game);
     
     // Définir les hooks pour gérer les événements
-    mlx_loop_hook(game.mlx, game_loop, &game);
+    mlx_loop_hook(game.mlx, animate_exit, &game);
     mlx_hook(game.win, 2, 1L<<0, key_press, &game); // Gestion des touches
     mlx_hook(game.win, 17, 0, close_window, &game); // Fermeture de la fenêtre
     

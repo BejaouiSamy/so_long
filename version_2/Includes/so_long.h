@@ -75,9 +75,10 @@ typedef struct s_queue
 // Chargement et affichage des textures
 int load_textures(t_game *game);
 void draw_map(t_game *game);
-int animate_player(t_game *game);
 int animate_exit(t_game *game);
 int game_loop(t_game *game);
+int load_basic_textures(t_game *game, int *width, int *height);
+int load_exit_textures_part1(t_game *game, int *width, int *height);
 
 // Gestion de `get_next_line`
 int ft_strlen_until(char *str, char c);
@@ -91,7 +92,7 @@ char *get_next_line(int fd);
 // Gestion des entrées et mouvements
 void move_player(t_game *game, int dx, int dy);
 int key_press(int keycode, t_game *game);
-void collect_item(t_game *game);
+void quit_game(t_game *game);
 
 // Gestion de la map
 int parse_map(t_game *game, char *filename);
@@ -101,13 +102,18 @@ void free_map(t_map *map);
 void free_game(t_game *game);
 void free_textures(t_game *game);
 void count_map_elements(t_game *game, char *line, int y);
+int checks_wall(t_game *game);
+int check_horizontal_walls(t_game *game);
+int check_vertical_walls(t_game *game);
+int read_map_file(t_game *game, int fd);
+int init_map_structures(t_game *game);
+int check_line_validity(t_game *game, char *line, int *len);
+int allocate_new_grid(t_game *game, char *line, char ***new_grid);
 
 // Checking path
 void enqueue(t_queue **queue, int x, int y);
 void dequeue(t_queue **queue);
 int is_valid_position(t_map *map, int x, int y, char **visited);
 int check_path(t_game *game);
-
-
 
 # endif

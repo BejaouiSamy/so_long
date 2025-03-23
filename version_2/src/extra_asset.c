@@ -3,15 +3,13 @@
 int load_basic_textures(t_game *game, int *width, int *height)
 {
     game->textures.wall = mlx_xpm_file_to_image
-        (game->mlx, "textures/Purple_Bricks.xpm", width, height);
+        (game->mlx, "textures/Purple_Brick.xpm", width, height);
     game->textures.floor = mlx_xpm_file_to_image
         (game->mlx, "textures/wood_floor.xpm", width, height);
     game->textures.player = mlx_xpm_file_to_image
         (game->mlx, "textures/wood_me.xpm", width, height);
     game->textures.collectible = mlx_xpm_file_to_image
         (game->mlx, "textures/cheese_burger.xpm", width, height);
-    return (game->textures.wall && game->textures.floor
-            && game->textures.player && game->textures.collectible);
 
     if (!game->textures.wall || !game->textures.floor || !game->textures.player
         || !game->textures.collectible)
@@ -45,13 +43,3 @@ int load_exit_textures_part1(t_game *game, int *width, int *height)
     return (1);
 }
 
-int load_textures(t_game *game)
-{
-    int width;
-    int height;
-
-    if (!load_basic_textures(game, &width, &height))
-        return (0);
-    load_exit_textures_part1(game, &width, &height);
-    return (1);
-}

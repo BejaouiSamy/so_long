@@ -139,22 +139,3 @@ int check_path(t_game *game)
     ft_putstr("Erreur: Chemin invalide, certains objets sont inaccessibles.\n");
     return (0);
 }
-
-// Exemple d'une fonction pour trouver le joueur
-/*void find_player_position(t_game *game)
-{
-    for (int y = 0; y < game->map->height; y++)
-    {
-        for (int x = 0; x < game->map->width; x++)
-        {
-            if (game->map->grid[y][x] == 'P')
-            {
-                game->player.x = x;
-                game->player.y = y;
-                printf("Joueur trouvé à la position (%d, %d)\n", x, y);
-                return;
-            }
-        }
-    }
-    ft_putstr("Erreur: Aucun joueur trouvé dans la carte\n");
-}*/

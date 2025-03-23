@@ -30,10 +30,10 @@ void count_map_elements(t_game *game, char *line, int y)
 
 int checks_wall(t_game *game)
 {
-    if (!checks_horizontal_walls(game))
+    if (!check_horizontal_walls(game))
         return (0);
     
-    if (!checks_vertical_walls(game))
+    if (!check_vertical_walls(game))
         return (0);
     
     return (1);
@@ -49,7 +49,7 @@ int parse_map(t_game *game, char *filename)
         ft_putstr("Impossible d'ouvrir la map\n");
         return (0);
     }
-    if (!init_map_structure(game))
+    if (!init_map_structures(game))
     {
         close(fd);
         return (0);
@@ -65,60 +65,21 @@ int parse_map(t_game *game, char *filename)
 
 int add_line_to_map(t_game *game, char *line)
 {
-    int i;
+    int len;
     char **new_grid;
-    char *clean_line;
+    int check_result;
 
-    // Ignorer les lignes vides a la fin du fichier
-    if (line[0] == '\0' || line[0] == '\n')
-        return (1);
-
-    clean_line = ft_strdup(line);
-    if (!clean_line)
+    new_grid = NULL;
+    check_result = check_line_validity(game, line, &len);
+    if (check_result != 2)
+        return (check_result);
+    if (!allocate_new_grid(game, line, &new_grid))
         return (0);
-
-    // Remplacer '\n' par '\0'
-    i = 0;
-    while(line[i] && line[i] != '\n')
-        i++;
-    line[i] = '\0';
-
-    // Verifier la largeur de la map
-    if (game->map->width == 0)
-        game->map->width = i;
-    else if (game->map->width != i)
-    {
-        ft_putstr("La map n'est pas rectangulaire");
-        free(clean_line);
-        return (0);
-    }
-    // Allouer une nouvelle grille pour ajouter la ligne
-    new_grid = malloc(sizeof(char *) * (game->map->height + 2));
-    if (!new_grid)
-    {
-        ft_putstr("Erreur d'allocation memoire");
-        free(clean_line);
-        return (0);
-    }
-
-    // Copier les anciennes lignes
-    i = 0;
-    while (i < game->map->height)
-    {
-        new_grid[i] = game->map->grid[i];
-        i++;
-    }
-
-    // Ajouter la nouvelle ligne
-    new_grid[game->map->height] = ft_strdup(line);
-    new_grid[game->map->height + 1] = NULL;
-
     // Liberer l'ancienne grille et mettre a jour
     if (game->map->grid)
         free(game->map->grid);
     game->map->grid = new_grid;
     game->map->height++;
-
     // Compter les elements importants
     count_map_elements(game, new_grid[game->map->height - 1], game->map->height - 1);
     return (1);
