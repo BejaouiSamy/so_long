@@ -20,9 +20,6 @@ typedef struct s_animation {
     int y;
 } t_animation;
 
-
-
-
 typedef struct s_map
 {
     char **grid;
@@ -109,6 +106,7 @@ int read_map_file(t_game *game, int fd);
 int init_map_structures(t_game *game);
 int check_line_validity(t_game *game, char *line, int *len);
 int allocate_new_grid(t_game *game, char *line, char ***new_grid);
+int check_file_extension(char *str);
 
 // Checking path
 void enqueue(t_queue **queue, int x, int y);

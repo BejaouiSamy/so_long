@@ -14,7 +14,6 @@ void free_textures(t_game *game)
         mlx_destroy_image(game->mlx, game->textures.player);
 
     // Libérer les frames de l'animation de sortie
-
     i = 0;
     while (i < 6) // 6 frames pour l'animation de la sortie
     {
@@ -30,6 +29,32 @@ int close_window(t_game *game)
     exit(0);
 }
 
+int ft_strcmp(char *s1, char *s2)
+{
+    while (*s1 == *s2 && *s1)
+    {
+        s1++;
+        s2++;
+    }
+    return (*s1 - *s2);
+}
+
+int check_file_extension(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+        i++;
+    while (i >= 0 && str[i] != '.')
+        i--;
+    if (i <= 0)
+        return (0);
+    if (ft_strcmp(str + i, ".ber") == 0)
+        return (1);
+    return (0);
+}
+
 /*int game_loop(t_game *game)
 {
     // Appeler les différentes animations
@@ -38,7 +63,6 @@ int close_window(t_game *game)
     
     return (0);
 }*/
-
 
 #include "../Includes/so_long.h"
 
@@ -54,11 +78,11 @@ int main(int argc, char **argv)
     }
     
     // Vérifier l'extension du fichier
-    //if (!check_file_extension(argv[1], ".ber"))
-    //{
-    //    ft_putstr("Le fichier doit avoir l'extension .ber\n");
-    //    return (1);
-    //}
+    if (!check_file_extension(argv[1]))
+    {
+        ft_putstr("Le fichier doit avoir l'extension .ber\n");
+        return (1);
+    }
     
     // Initialiser la structure de jeu
     ft_memset(&game, 0, sizeof(t_game));
