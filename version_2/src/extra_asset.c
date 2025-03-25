@@ -8,11 +8,10 @@ int load_basic_textures(t_game *game, int *width, int *height)
         (game->mlx, "textures/wood_floor.xpm", width, height);
     game->textures.player = mlx_xpm_file_to_image
         (game->mlx, "textures/wood_me.xpm", width, height);
-    game->textures.collectible = mlx_xpm_file_to_image
-        (game->mlx, "textures/cheese_burger.xpm", width, height);
+    //game->textures.collectible = mlx_xpm_file_to_image
+    //    (game->mlx, "textures/wood_chest.xpm", width, height);
 
-    if (!game->textures.wall || !game->textures.floor || !game->textures.player
-        || !game->textures.collectible)
+    if (!game->textures.wall || !game->textures.floor || !game->textures.player)
     {
         ft_putstr("❌ Impossible de charger les textures\n");
         return (0);
@@ -43,3 +42,24 @@ int load_exit_textures_part1(t_game *game, int *width, int *height)
     return (1);
 }
 
+int load_chest_textures(t_game *game, int *width, int *height)
+{
+    int i;
+
+    char *chest_anim[] = {
+        "textures/wood_chest.xpm", "textures/wood_chest1.xpm",
+        "textures/wood_chest2.xpm", "textures/wood_chest3.xpm"
+    };
+    i = 0;
+    while (i < 4)
+    {
+        game->textures.chest_frames[i] = mlx_xpm_file_to_image
+            (game->mlx, chest_anim[i], width, height);
+        if (!game->textures.chest_frames[i])
+            ft_putstr("❌ Erreur: Impossible de charger wood_chest.xpm\n");
+        else
+            ft_putstr("✅ Texture wood_chest.xpm chargee avec succees\n");
+        i++;
+    }
+    return (1);
+}

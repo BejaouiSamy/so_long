@@ -23,6 +23,11 @@ void move_player(t_game *game, int dx, int dy)
     if (game->map->grid[new_y][new_x] != '1')
     {
         new_cell = game->map->grid[new_y][new_x];
+        if (new_cell == 'E' && game->map->collectibles > 0)
+        {
+            ft_putstr("❌ Vous devez ramasser tous les collectibles avant de sortir !\n");
+            return; // Bloque le mouvement
+        }
         // Efface l'ancienne position du joueur dans la grille
         game->map->grid[game->player.y][game->player.x] = '0';
         // MAJ de la position du joueur
@@ -43,7 +48,7 @@ void move_player(t_game *game, int dx, int dy)
         // MAJ de la position du joueur dans la grille
         game->map->grid[new_y][new_x] = 'P';
         //Redessiner la map
-        mlx_clear_window(game->mlx, game->win);
+        //mlx_clear_window(game->mlx, game->win);
         draw_map(game);
     }
 }
@@ -53,13 +58,7 @@ void move_player(t_game *game, int dx, int dy)
 int key_press(int keycode, t_game *game)
 {
     if (keycode == 65307) // ESC pour quitter
-    {
-        mlx_destroy_window(game->mlx, game->win);
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-        free_game(game);
-        exit(0);
-    }
+      quit_game(game);
     if (keycode == 97)
         move_player(game, -1, 0); // Deplacer a gauche
     else if (keycode == 119)

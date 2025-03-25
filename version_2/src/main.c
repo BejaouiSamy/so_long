@@ -29,16 +29,6 @@ int close_window(t_game *game)
     exit(0);
 }
 
-int ft_strcmp(char *s1, char *s2)
-{
-    while (*s1 == *s2 && *s1)
-    {
-        s1++;
-        s2++;
-    }
-    return (*s1 - *s2);
-}
-
 int check_file_extension(char *str)
 {
     int i;
@@ -55,16 +45,12 @@ int check_file_extension(char *str)
     return (0);
 }
 
-/*int game_loop(t_game *game)
+int game_loop(t_game *game)
 {
-    // Appeler les différentes animations
-    //animate_player(game);
+    animate_chest(game);
     animate_exit(game);
-    
     return (0);
-}*/
-
-#include "../Includes/so_long.h"
+}
 
 int main(int argc, char **argv)
 {
@@ -121,7 +107,7 @@ int main(int argc, char **argv)
     draw_map(&game);
     
     // Définir les hooks pour gérer les événements
-    mlx_loop_hook(game.mlx, animate_exit, &game);
+    mlx_loop_hook(game.mlx, game_loop, &game);
     mlx_hook(game.win, 2, 1L<<0, key_press, &game); // Gestion des touches
     mlx_hook(game.win, 17, 0, close_window, &game); // Fermeture de la fenêtre
     

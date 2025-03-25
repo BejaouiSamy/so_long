@@ -38,6 +38,7 @@ typedef struct s_textures
     void *collectible;
     void *player;
     void *exit_frames[6];
+    void *chest_frames[4];
 } t_textures;
 
 typedef struct s_player
@@ -59,6 +60,7 @@ typedef struct s_game
     t_player player;
     t_player exit;
     int exit_current_frame; // Indice de frame de sortie
+    int chest_current_frame;
     t_animation anim;
 } t_game;
 
@@ -114,4 +116,6 @@ void dequeue(t_queue **queue);
 int is_valid_position(t_map *map, int x, int y, char **visited);
 int check_path(t_game *game);
 
+int animate_chest(t_game *game);
+int load_chest_textures(t_game *game, int *width, int *height);
 # endif
