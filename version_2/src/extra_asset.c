@@ -8,10 +8,17 @@ int load_basic_textures(t_game *game, int *width, int *height)
         (game->mlx, "textures/wood_floor.xpm", width, height);
     game->textures.player = mlx_xpm_file_to_image
         (game->mlx, "textures/wood_me.xpm", width, height);
-    //game->textures.collectible = mlx_xpm_file_to_image
-    //    (game->mlx, "textures/wood_chest.xpm", width, height);
-
-    if (!game->textures.wall || !game->textures.floor || !game->textures.player)
+    game->textures.gelano = mlx_xpm_file_to_image
+        (game->mlx, "textures/wood_gelano.xpm", width, height);
+    game->textures.popo = mlx_xpm_file_to_image
+        (game->mlx, "textures/wood_popo.xpm", width, height);
+    game->textures.glove = mlx_xpm_file_to_image
+        (game->mlx, "textures/wood_glove.xpm", width, height);
+    game->textures.enemy = mlx_xpm_file_to_image
+        (game->mlx, "textures/wood_blob.xpm", width, height);
+    
+    if (!game->textures.wall || !game->textures.floor || !game->textures.player
+            || !game->textures.gelano || !game->textures.popo || !game->textures.enemy)
     {
         ft_putstr("❌ Impossible de charger les textures\n");
         return (0);

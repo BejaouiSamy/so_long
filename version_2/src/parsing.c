@@ -24,6 +24,8 @@ void count_map_elements(t_game *game, char *line, int y)
             game->player.x = i;
             game->player.y = y;
         }
+        if (line[i] == 'X')
+            add_enemy(game, i, y);
         i++;
     }
 }

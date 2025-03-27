@@ -47,10 +47,10 @@ int allocate_new_grid(t_game *game, char *line, char ***new_grid)
     return (1);
 }
 
-void free_game(t_game *game)
+int free_game(t_game *game)
 {
     if (!game)
-        return;
+        return (0);
     
     if (game->map)
         free_map(game->map);
@@ -65,4 +65,5 @@ void free_game(t_game *game)
         mlx_destroy_display(game->mlx);
         free(game->mlx);
     }
+    exit(0);
 }

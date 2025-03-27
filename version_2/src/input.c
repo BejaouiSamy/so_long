@@ -1,14 +1,5 @@
 #include "../Includes/so_long.h"
 
-void quit_game(t_game *game)
-{
-    mlx_destroy_window(game->mlx, game->win);
-    mlx_destroy_display(game->mlx);
-    free(game->mlx);
-    free_game(game);
-    exit(0);
-}
-
 // Fonction pour deplacer le joueur
 void move_player(t_game *game, int dx, int dy)
 {
@@ -43,7 +34,7 @@ void move_player(t_game *game, int dx, int dy)
         if (new_cell == 'E' && game->map->collectibles == 0)
         {
             ft_putstr("Félicitations ! Vous avez gagné !\n");
-            quit_game(game);
+            free_game(game);
         }
         // MAJ de la position du joueur dans la grille
         game->map->grid[new_y][new_x] = 'P';
@@ -53,12 +44,11 @@ void move_player(t_game *game, int dx, int dy)
     }
 }
 
-
 // Fonction de gestion des inputs
 int key_press(int keycode, t_game *game)
 {
     if (keycode == 65307) // ESC pour quitter
-      quit_game(game);
+      free_game(game);
     if (keycode == 97)
         move_player(game, -1, 0); // Deplacer a gauche
     else if (keycode == 119)

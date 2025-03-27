@@ -23,10 +23,8 @@ void draw_map(t_game *game)
         x = 0;
         while (x < game->map->width)
         {
-            // Dessiner le sol partout
             if (game->map->grid[y][x] != '1')
                 mlx_put_image_to_window(game->mlx, game->win, game->textures.floor, x * 64, y * 64);
-            // Dessiner les éléments spécifiques
             if (game->map->grid[y][x] == '1') // Mur
                 mlx_put_image_to_window(game->mlx, game->win, game->textures.wall, x * 64, y * 64);
             else if (game->map->grid[y][x] == 'C') // Collectible
@@ -35,6 +33,14 @@ void draw_map(t_game *game)
                 mlx_put_image_to_window(game->mlx, game->win, game->textures.exit_frames[game->exit_current_frame], x * 64, y * 64);  // Première frame de l'animation de la sortie
             else if (game->map->grid[y][x] == 'P') // Joueur
                 mlx_put_image_to_window(game->mlx, game->win, game->textures.player, x * 64, y * 64);
+            else if (game->map->grid[y][x] == 'G') // gelano
+                mlx_put_image_to_window(game->mlx, game->win, game->textures.gelano, x * 64, y * 64);
+            else if (game->map->grid[y][x] == 'O') // popo 
+                mlx_put_image_to_window(game->mlx, game->win, game->textures.popo, x * 64, y * 64);
+            else if (game->map->grid[y][x] == 'T') // glove
+                mlx_put_image_to_window(game->mlx, game->win, game->textures.glove, x * 64, y * 64);
+            else if (game->map->grid[y][x] == 'X')
+                mlx_put_image_to_window(game->mlx, game->win, game->textures.enemy, x * 64, y * 64);
             x++;
         }
         y++;
@@ -82,6 +88,7 @@ int animate_chest(t_game *game)
     clock_t current_time = clock();
     int x;
     int y;
+
     // Changer de frame toutes les 500 millisecondes (0.5 secondes)
     if ((current_time - last_time) < (CLOCKS_PER_SEC / 10))
         return (0);
