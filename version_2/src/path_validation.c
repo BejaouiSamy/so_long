@@ -122,7 +122,6 @@ int check_path(t_game *game)
             i++;
         }
     }
-
     // Libérer la mémoire du tableau de visite
     y = 0;
     while (y < game->map->height)

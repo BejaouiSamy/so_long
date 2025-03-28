@@ -37,10 +37,7 @@ typedef struct s_enemy {
     int x;
     int y;
     int dir; // 1 = droite, -1 = gauche (pour une patrouille horizontale)
-    int last_move_time;
-    struct s_enemy *next;
 } t_enemy;
-
 
 typedef struct s_player {
     int x;
@@ -60,7 +57,8 @@ typedef struct s_game {
     t_player exit;
     int exit_current_frame; // Indice de frame de sortie
     int chest_current_frame;
-    t_enemy *enemies;
+    t_enemy enemy;
+    int enemy_timer;
 } t_game;
 
 // Structure pour la file d'attente BFS
@@ -121,6 +119,5 @@ int load_chest_textures(t_game *game, int *width, int *height);
 void move_enemies(t_game *game);
 void check_collision(t_game *game);
 void add_enemy(t_game *game, int x, int y);
-t_enemy *new_enemy(int x, int y);
 
 # endif
