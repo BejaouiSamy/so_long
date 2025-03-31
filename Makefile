@@ -20,8 +20,9 @@ OBJ_PATH = ./obj
 # Liste des fichiers sources
 SRC = main.c get_next.c asset.c \
       input.c parsing.c path_validation.c \
-	  extra_asset.c extra_parsing_file_2.c \
-	  extra_parsing_file.c enemy.c
+	  animate_frames_bonus.c extra_parsing_file_2.c \
+	  extra_parsing_file.c enemy_bonus.c get_next_extra.c \
+	  free_functions.c path_validation_extra.c
 SRC_FILES = $(addprefix $(SRC_PATH)/, $(SRC))
 
 # Fichiers objets

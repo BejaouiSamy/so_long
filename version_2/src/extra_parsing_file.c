@@ -5,17 +5,16 @@ int check_horizontal_walls(t_game *game)
     int x;
 
     x = 0;
-    // Vérifier la première et la dernière ligne
     while (x < game->map->width)
     {
-        if (game->map->grid[0][x] != '1')  // Vérifie la première ligne
+        if (game->map->grid[0][x] != '1')
         {
             ft_putstr("Erreur: La carte n'est pas entourée de murs (ligne 1, position ");
-            ft_putnbr(x + 1);  // Afficher la position exacte
+            ft_putnbr(x + 1);
             ft_putstr(")\n");
             return (0);
         }
-        if (game->map->grid[game->map->height - 1][x] != '1')  // Vérifie la dernière ligne
+        if (game->map->grid[game->map->height - 1][x] != '1')
         {
             ft_putstr("Erreur: La carte n'est pas entourée de murs (dernière ligne, position ");
             ft_putnbr(x + 1);
@@ -32,17 +31,17 @@ int check_vertical_walls(t_game *game)
     int y;
 
     y = 0;
-    // Vérifier les bords gauche et droit
+
     while (y < game->map->height)
     {
-        if (game->map->grid[y][0] != '1')  // Vérifie la première colonne
+        if (game->map->grid[y][0] != '1')
         {
             ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne gauche, ligne ");
             ft_putnbr(y + 1);
             ft_putstr(")\n");
             return (0);
         }
-        if (game->map->grid[y][game->map->width - 1] != '1')  // Vérifie la dernière colonne
+        if (game->map->grid[y][game->map->width - 1] != '1')
         {
             ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne droite, ligne ");
             ft_putnbr(y + 1);
@@ -73,39 +72,18 @@ int read_map_file(t_game *game, int fd)
 
 int init_map_structures(t_game *game)
 {
-    // Allouer la structure de map dans game
     game->map = malloc(sizeof(t_map));
     if(!game->map)
     {
         ft_putstr("Erreur d'allocation memoire");
         return(0);
     }
-    // Initialiser les variables de map
     game->map->width = 0;
     game->map->height = 0;
     game->map->collectibles = 0;
     game->map->exit = 0;
     game->map->player = 0;
     game->map->grid = NULL;
+    game->steps = 0;
     return (1);
-}
-
-// Fonction pour libérer la mémoire de la map
-void free_map(t_map *map)
-{
-    int i;
-
-    if (!map)
-        return;
-    i = 0;
-    if (map->grid)
-    {
-        while(i < map->height)
-        {
-            free(map->grid[i]);
-            i++;
-        }
-        free(map->grid);
-    }
-    free(map);
 }

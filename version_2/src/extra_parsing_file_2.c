@@ -41,29 +41,8 @@ int allocate_new_grid(t_game *game, char *line, char ***new_grid)
         (*new_grid)[i] = game->map->grid[i];
         i++;
     }
-    // Ajouteer la nouvelle ligne
+    // Ajouter la nouvelle ligne
     (*new_grid)[game->map->height] = ft_strdup(line);
     (*new_grid)[game->map->height + 1] = NULL;
     return (1);
-}
-
-int free_game(t_game *game)
-{
-    if (!game)
-        return (0);
-    
-    if (game->map)
-        free_map(game->map);
-    
-    free_textures(game);
-
-    if (game->win)
-        mlx_destroy_window(game->mlx, game->win);
-    
-    if (game->mlx)
-    {
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-    }
-    exit(0);
 }

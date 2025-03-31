@@ -77,12 +77,10 @@ int add_line_to_map(t_game *game, char *line)
         return (check_result);
     if (!allocate_new_grid(game, line, &new_grid))
         return (0);
-    // Liberer l'ancienne grille et mettre a jour
     if (game->map->grid)
         free(game->map->grid);
     game->map->grid = new_grid;
     game->map->height++;
-    // Compter les elements importants
     count_map_elements(game, new_grid[game->map->height - 1], game->map->height - 1);
     return (1);
 }
@@ -90,34 +88,16 @@ int add_line_to_map(t_game *game, char *line)
 int validate_map(t_game *game)
 {
     if (game->map->width == 0)
-    {
-        ft_putstr("Erreur: La map est vide ou invalide\n");
-        return (0);
-    }
+        return (handle_error("PErreur: La map est vide ou invalide\n", game));
     if (game->map->collectibles == 0)
-    {
-        ft_putstr("Pas de collectibles dans la map");
-        return (0);
-    }
+        return (handle_error("Pas de collectibles dans la map\n", game));
     if (game->map->exit == 0)
-    {
-        ft_putstr("Pas de sortie dans la map");
-        return (0);
-    }
+        return (handle_error("Pas de sortie dans la map\n", game));
     if (game->map->player != 1)
-    {
-        ft_putstr("Il doit y avoir un joueur");
-        return (0);
-    }
+        return (handle_error("Il doit y avoir un joueur\n", game));
     if (!checks_wall(game))
-    {
-        ft_putstr("La map doit etre entouree de murs");
-        return (0);
-    }
+        return (handle_error("La map doit etre entouree de murs\n", game));
     if (!check_path(game))
-    {
-        ft_putstr("Pas de chemin valide dans la map");
-        return (0);
-    }
+        return (handle_error("Pas de chemin valide dans la map\n", game));
     return (1);
 }

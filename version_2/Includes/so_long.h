@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+extern int g_chest_counter;
+extern int g_exit_counter;
+
+
 typedef struct s_map
 {
     char **grid;
@@ -29,6 +33,8 @@ typedef struct s_textures
     void *popo;
     void *glove;
     void *enemy;
+    void *enemy_right;
+    void *enemy_left;
     void *exit_frames[6];
     void *chest_frames[4];
 } t_textures;
@@ -59,6 +65,7 @@ typedef struct s_game {
     int chest_current_frame;
     t_enemy enemy;
     int enemy_timer;
+    int steps;
 } t_game;
 
 // Structure pour la file d'attente BFS
@@ -71,10 +78,10 @@ typedef struct s_queue
 // Chargement et affichage des textures
 int load_textures(t_game *game);
 void draw_map(t_game *game);
-int animate_exit(t_game *game);
+int animate_exit(t_game *game, int *exit_counter);
 int game_loop(t_game *game);
 int load_basic_textures(t_game *game, int *width, int *height);
-int load_exit_textures_part1(t_game *game, int *width, int *height);
+int load_exit_textures(t_game *game, int *width, int *height);
 
 // Gestion de `get_next_line`
 int ft_strlen_until(char *str, char c);
@@ -112,12 +119,31 @@ void dequeue(t_queue **queue);
 int is_valid_position(t_map *map, int x, int y, char **visited);
 int check_path(t_game *game);
 
-int animate_chest(t_game *game);
+//int animate_chest(t_game *game);
+int animate_chest(t_game *game, int *frame_counter);
 int load_chest_textures(t_game *game, int *width, int *height);
 
 // Gestion des ennemis
 void move_enemies(t_game *game);
 void check_collision(t_game *game);
 void add_enemy(t_game *game, int x, int y);
+
+void display_steps(t_game *game);
+
+void free_loop(t_game *game);
+void draw_map_1(t_game *game, int y, int x);
+void check_cell(t_game *game, char new_cell);
+void load_basic_texture_1(t_game *game, int *width, int *height);
+
+void extract_line_1(char **stash, char **line, int *line_len);
+int initialize_game(t_game *game, char *map_path);
+int handle_error(char *msg, t_game *game);
+
+int bfs(t_game *game, char **visited, int *c_found, int *e_found);
+char **init_visited(t_game *game);
+void free_visited(char **visited, int height);
+void process_node(t_game *game, char **visited, int x, int y, int *c_found, int *e_found, t_queue **queue);
+void print_game_info(t_game *game);
+void update_x_position(t_game *game);
 
 # endif
