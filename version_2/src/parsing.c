@@ -1,6 +1,5 @@
 #include "../Includes/so_long.h"
 
-
 void count_map_elements(t_game *game, char *line, int y)
 {
     int i;
@@ -8,27 +7,14 @@ void count_map_elements(t_game *game, char *line, int y)
     i = 0;
     while (line[i])
     {
-        if (line[i] == 'C') // Collectible
-            game->map->collectibles++;
-        else if (line[i] == 'E') // Exit
-        {
-            game->map->exit++;
-            game->map->exit_count++;
-            game->exit.x = i;
-            game->exit.y = y;
-            printf("✅ Sortie trouvée en (%d, %d)\n", i, y);
-        }
-        else if (line[i] == 'P') // Player
-        {
-            game->map->player++;
-            game->player.x = i;
-            game->player.y = y;
-        }
-        if (line[i] == 'X')
-            add_enemy(game, i, y);
+        if (line[i] == 'C' || line[i] == 'T' || line[i] == 'G' || line[i] == 'O')
+            count_collectibles(game, line[i]);
+        else
+            process_map_element(game, line[i], i, y);
         i++;
     }
 }
+
 
 int checks_wall(t_game *game)
 {

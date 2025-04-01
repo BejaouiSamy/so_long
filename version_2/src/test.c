@@ -98,3 +98,74 @@ int main(int ac, char **av)
             write(1, "Error", 5);
     }
 }
+
+void tab_texture(t_game *game)
+{
+    int i;
+
+    i = 0;
+    game->num_collectible_texture = 4;
+    game->collectibles_tab = malloc(sizeof(void *) *game->num_collectible_texture);
+    if (!game->collectibles_tab)
+        handle_error("Error memory allocation \n", game);
+    game->tab_texture[0] = mlx_xpm_file_to_image
+        (game->mlx, "textures/glove.xpm", width, height);
+    game->tab_texture[1] = mlx_xpm_file_to_image
+        (game->mlx, "textures/popo.xpm", width, height);
+    game->tab_texture[2] = mlx_xpm_file_to_image
+        (game->mlx, "textures/gelano.xpm", width, height);
+    game->tab_texture[0] = mlx_xpm_file_to_image
+        (game->mlx, load_chest_textures, width, height);
+    while (i < game->num_collectible_texture)
+    {
+        if (!game->tab_texture[i])
+        {
+            handle_error("Error textures collectible loading\n", game);
+        }
+        i++;
+    }
+}
+
+    while (y < game->map->height)
+    {
+        while (i < game->map->width)
+        {
+            if (game->map[y][x] == 'C')
+            {
+                game->map->collectibles++;
+            }
+            i++;
+        }
+        x++;
+    }
+
+    void declar_collectibles(t_game *game)
+    {
+        int x;
+        int y;
+
+        game->collectibles_on_map = malloc(sizeof(t_collectible_instance) * game->collectible_count);
+        if (!game->collectibles_on_map)
+            exit_error("Erreur malloc instances collectibles", game);
+
+        int current_collectible_index = 0;
+        y = 0;
+        while (y < game->map->height)
+        {
+            x = 0;
+            while (x < game->map->width)
+            {
+                if (game->map[y][x] == 'C')
+                {
+                    ame->collectibles_on_map[current_collectible_index].x = x;
+                    game->collectibles_on_map[current_collectible_index].y = y;
+                    // Assignation de la texture (ex: cyclique)
+                    game->collectibles_on_map[current_collectible_index].texture_index =
+                        current_collectible_index % game->num_collectible_textures;
+                    current_collectible_index++;
+                }
+                x++;
+            }
+            y++;
+        }
+    }

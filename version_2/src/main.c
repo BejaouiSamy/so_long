@@ -25,7 +25,6 @@ int game_loop(t_game *game)
     return (0);
 }
 
-
 int initialize_game(t_game *game, char *map_path)
 {
     ft_memset(game, 0, sizeof(t_game));

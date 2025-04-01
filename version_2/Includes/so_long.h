@@ -11,15 +11,16 @@
 extern int g_chest_counter;
 extern int g_exit_counter;
 
-
 typedef struct s_map
 {
     char **grid;
     int width;
     int height;
     int collectibles;
+    int gelano;
+    int popo;
+    int glove;
     int exit;
-    int exit_count;
     int player;
 } t_map;
 
@@ -42,16 +43,12 @@ typedef struct s_textures
 typedef struct s_enemy {
     int x;
     int y;
-    int dir; // 1 = droite, -1 = gauche (pour une patrouille horizontale)
+    int dir;
 } t_enemy;
 
 typedef struct s_player {
     int x;
     int y;
-    int moves;
-    int collected;
-    int direction;
-    int current_frame;
 } t_player;
 
 typedef struct s_game {
@@ -71,7 +68,8 @@ typedef struct s_game {
 // Structure pour la file d'attente BFS
 typedef struct s_queue
 {
-    int x, y;
+    int x;
+    int y;
     struct s_queue *next;
 } t_queue;
 
@@ -132,7 +130,7 @@ void display_steps(t_game *game);
 
 void free_loop(t_game *game);
 void draw_map_1(t_game *game, int y, int x);
-void check_cell(t_game *game, char new_cell);
+int check_cell(t_game *game, char new_cell);
 void load_basic_texture_1(t_game *game, int *width, int *height);
 
 void extract_line_1(char **stash, char **line, int *line_len);
@@ -145,5 +143,13 @@ void free_visited(char **visited, int height);
 void process_node(t_game *game, char **visited, int x, int y, int *c_found, int *e_found, t_queue **queue);
 void print_game_info(t_game *game);
 void update_x_position(t_game *game);
+
+int init_collectible_instances(t_game *game);
+void tab_texture(t_game *game, int width, int height);
+
+void process_map_element(t_game *game, char element, int x, int y);
+void count_collectibles(t_game *game, char element);
+void exit_handling(t_game *game, char new_cell);
+int handle_collectibles(t_game *game, char new_cell);
 
 # endif

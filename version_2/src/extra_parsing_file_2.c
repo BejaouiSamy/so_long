@@ -34,15 +34,47 @@ int allocate_new_grid(t_game *game, char *line, char ***new_grid)
         ft_putstr("Erreur d'allocation memoire");
         return (0);
     }
-    // Copier les anciennes lignes
     i = 0;
     while(i < game->map->height)
     {
         (*new_grid)[i] = game->map->grid[i];
         i++;
     }
-    // Ajouter la nouvelle ligne
     (*new_grid)[game->map->height] = ft_strdup(line);
     (*new_grid)[game->map->height + 1] = NULL;
     return (1);
+}
+
+void count_collectibles(t_game *game, char element)
+{
+    if (element == 'C')
+        game->map->collectibles++;
+    else if (element == 'T')
+        game->map->glove++;
+    else if (element == 'G')
+        game->map->gelano++;
+    else if (element == 'O')
+        game->map->popo++;
+}
+
+void process_map_element(t_game *game, char element, int x, int y)
+{
+    if (element == 'E')
+    {
+        game->map->exit++;
+        game->exit.x = x;
+        game->exit.y = y;
+        ft_putstr("✅ Sortie trouvée en (");
+        ft_putnbr(x);
+        ft_putstr(", ");
+        ft_putnbr(y);
+        ft_putstr(")\n");    }
+    else if (element == 'P')
+    {
+        game->map->player++;
+        game->player.x = x;
+        game->player.y = y;
+    }
+    else if (element == 'X')
+        add_enemy(game, x, y);
 }

@@ -1,6 +1,5 @@
 #include "../Includes/so_long.h"
 
-
 void load_basic_texture_1(t_game *game, int *width, int *height)
 {
     game->textures.wall = mlx_xpm_file_to_image
