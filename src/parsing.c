@@ -1,248 +1,90 @@
 #include "../Includes/so_long.h"
 
-
-void count_map_elements(t_game *game, char *line, int y)
+void	count_map_elements(t_game *game, char *line, int y)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (line[i])
-    {
-        if (line[i] == 'C') // Collectible
-            game->map->collectibles++;
-        else if (line[i] == 'E') // Exit
-        {
-            game->map->exit++;
-            game->map->exit_count++;
-            game->exit.x = i;
-            game->exit.y = y;
-            printf("✅ Sortie trouvée en (%d, %d)\n", i, y);
-        }
-        else if (line[i] == 'P') // Player
-        {
-            game->map->player++;
-            game->player.x = i;
-            game->player.y = y;
-        }
-        i++;
-    }
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 'C'
+				|| line[i] == 'T'
+				|| line[i] == 'G'
+				|| line[i] == 'O')
+			count_collectibles(game, line[i]);
+		else
+			process_map_element(game, line[i], i, y);
+		i++;
+	}
 }
 
-int checks_wall(t_game *game)
+
+int	checks_wall(t_game *game)
 {
-    int x;
-    int y;
-
-    x = 0;
-    /* Debug
-    printf("Dimensions de la carte : %d x %d\n", game->map->width, game->map->height);
-    printf("Premier caractère : '%c'\n", game->map->grid[0][0]);
-    printf("Deuxième caractère : '%c'\n", game->map->grid[0][1]);
-    printf("Troisième caractère : '%c'\n", game->map->grid[0][2]);
-    for (int i = 0; i < game->map->width; i++) {
-        printf("Ligne 1, Position %d: '%c' (ASCII: %d)\n", i + 1, game->map->grid[0][i], game->map->grid[0][i]);
-        if (game->map->grid[0][i] != '1') {
-            printf("Erreur détectée à Ligne 1, Position %d\n", i + 1);
-        }
-    }*/
-    // Vérifier la première et la dernière ligne
-    while (x < game->map->width)
-    {
-        if (game->map->grid[0][x] != '1')  // Vérifie la première ligne
-        {
-            ft_putstr("Erreur: La carte n'est pas entourée de murs (ligne 1, position ");
-            ft_putnbr(x + 1);  // Afficher la position exacte
-            ft_putstr(")\n");
-            return (0);
-        }
-        if (game->map->grid[game->map->height - 1][x] != '1')  // Vérifie la dernière ligne
-        {
-            ft_putstr("Erreur: La carte n'est pas entourée de murs (dernière ligne, position ");
-            ft_putnbr(x + 1);
-            ft_putstr(")\n");
-            return (0);
-        }
-        x++;
-    }
-
-    y = 0;
-    // Vérifier les bords gauche et droit
-    while (y < game->map->height)
-    {
-        if (game->map->grid[y][0] != '1')  // Vérifie la première colonne
-        {
-            ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne gauche, ligne ");
-            ft_putnbr(y + 1);
-            ft_putstr(")\n");
-            return (0);
-        }
-        if (game->map->grid[y][game->map->width - 1] != '1')  // Vérifie la dernière colonne
-        {
-            ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne droite, ligne ");
-            ft_putnbr(y + 1);
-            ft_putstr(")\n");
-            return (0);
-        }
-        y++;
-    }
-
-    return (1); // La carte est bien entourée de murs
+	if (!check_horizontal_walls(game))
+		return (0);
+	if (!check_vertical_walls(game))
+		return (0);
+	return (1);
 }
 
-int parse_map(t_game *game, char *filename)
+int	parse_map(t_game *game, char *filename)
 {
-    int fd;
-    char *line;
+	int	fd;
 
-    fd = open(filename, O_RDONLY);
-    if (fd < 0)
-    {
-        ft_putstr("Impossible d'ouvrir la map\n");
-        return (0);
-    }
-
-    // Allouer la structure de map dans game
-    game->map = malloc(sizeof(t_map));
-    if(!game->map)
-    {
-        ft_putstr("Erreur d'allocation memoire");
-        close(fd);
-        return(0);
-    }
-
-    // Initialiser les variables de map
-    game->map->width = 0;
-    game->map->height = 0;
-    game->map->collectibles = 0;
-    game->map->exit = 0;
-    game->map->player = 0;
-    game->map->grid = NULL;
-
-    // Lire le fichier ligne par ligne
-    while((line = get_next_line(fd)) != NULL)
-    {
-        if (!add_line_to_map(game, line))
-        {
-            free(line);
-            close(fd);
-            free_map(game->map);
-            return (0);
-        }
-        free(line);
-    }
-    close(fd);
-    return(validate_map(game));
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr("Impossible d'ouvrir la map\n");
+		return (0);
+	}
+	if (!init_map_structures(game))
+	{
+		close(fd);
+		return (0);
+	}
+	if (!read_map_file(game, fd))
+	{
+		close(fd);
+		return (0);
+	}
+	close(fd);
+	return (validate_map(game));
 }
 
-int add_line_to_map(t_game *game, char *line)
+int	add_line_to_map(t_game *game, char *line)
 {
-    int i;
-    char **new_grid;
-    char *clean_line;
+	int	len;
+	char	**new_grid;
+	int	check_result;
 
-    // Ignorer les lignes vides a la fin du fichier
-    if (line[0] == '\0' || line[0] == '\n')
-        return (1);
-
-    clean_line = ft_strdup(line);
-    if (!clean_line)
-        return (0);
-
-    // Remplacer '\n' par '\0'
-    i = 0;
-    while(line[i] && line[i] != '\n')
-        i++;
-    line[i] = '\0';
-
-    // Verifier la largeur de la map
-    if (game->map->width == 0)
-        game->map->width = i;
-    else if (game->map->width != i)
-    {
-        ft_putstr("La map n'est pas rectangulaire");
-        free(clean_line);
-        return (0);
-    }
-    // Allouer une nouvelle grille pour ajouter la ligne
-    new_grid = malloc(sizeof(char *) * (game->map->height + 2));
-    if (!new_grid)
-    {
-        ft_putstr("Erreur d'allocation memoire");
-        free(clean_line);
-        return (0);
-    }
-
-    // Copier les anciennes lignes
-    i = 0;
-    while (i < game->map->height)
-    {
-        new_grid[i] = game->map->grid[i];
-        i++;
-    }
-
-    // Ajouter la nouvelle ligne
-    new_grid[game->map->height] = ft_strdup(line);
-    new_grid[game->map->height + 1] = NULL;
-
-    // Liberer l'ancienne grille et mettre a jour
-    free(game->map->grid);
-    game->map->grid = new_grid;
-    game->map->height++;
-
-    // Compter les elements importants
-    count_map_elements(game, new_grid[game->map->height - 1], game->map->height - 1);
-    return (1);
+	new_grid = NULL;
+	check_result = check_line_validity(game, line, &len);
+	if (check_result != 2)
+		return (check_result);
+	if (!allocate_new_grid(game, line, &new_grid))
+		return (0);
+	if (game->map->grid)
+		free(game->map->grid);
+	game->map->grid = new_grid;
+	game->map->height++;
+	count_map_elements(game, new_grid[game->map->height - 1], game->map->height - 1);
+	return (1);
 }
 
-int validate_map(t_game *game)
+int	validate_map(t_game *game)
 {
-    // Verifier les elements obligatoires
-    if (game->map->collectibles == 0)
-    {
-        ft_putstr("Pas de collectibles dans la map");
-        return (0);
-    }
-    if (game->map->exit == 0)
-    {
-        ft_putstr("Pas de sortie dans la map");
-        return (0);
-    }
-    if (game->map->player != 1)
-    {
-        ft_putstr("Il doit y avoir un joueur");
-        return (0);
-    }
-    // Verifier les murs
-    if (!checks_wall(game))
-    {
-        ft_putstr("La map doit etre entouree de murs");
-        return (0);
-    }
-    // Verifier si le joueur peut atteindre tous les collectibles et la sortie
-    if (!check_path(game))
-    {
-        ft_putstr("Pas de chemin valide dans la map");
-        return (0);
-    }
-    return (1);
-}
-
-// Fonction pour libérer la mémoire de la map
-void free_map(t_map *map)
-{
-    int i;
-
-    if (!map)
-        return;
-    i = 0;
-    if (map->grid)
-    {
-        while(i < map->height)
-        {
-            free(map->grid[i]);
-            i++;
-        }
-        free(map->grid);
-    }
-    free(map);
+	if (game->map->width == 0)
+		return (handle_error("Erreur: La map est vide ou invalide\n", game));
+	if (game->map->collectibles == 0 || game->map->gelano == 0 || game->map->glove == 0 || game->map->popo == 0)
+		return (handle_error("Pas de collectibles dans la map\n", game));
+	if (game->map->exit == 0)
+		return (handle_error("Pas de sortie dans la map\n", game));
+	if (game->map->player != 1)
+		return (handle_error("Il doit y avoir un joueur\n", game));
+	if (!checks_wall(game))
+		return (handle_error("La map doit etre entouree de murs\n", game));
+	if (!check_path(game))
+		return (handle_error("Pas de chemin valide dans la map\n", game));
+	return (1);
 }
