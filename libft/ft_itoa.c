@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/05 17:23:18 by bsamy             #+#    #+#             */
+/*   Updated: 2025/01/05 18:05:13 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stdlib.h>
 
@@ -16,7 +28,7 @@ static long int	ft_len(int n)
 	int	len;
 
 	len = 0;
-	if(n <= 0)
+	if (n <= 0)
 		len = 1;
 	while (n != 0)
 	{
@@ -28,16 +40,16 @@ static long int	ft_len(int n)
 
 char	*ft_itoa(int n)
 {
-	char	*s;
-	long int	len;
+	char			*s;
+	long int		len;
 	unsigned int	number;
-	int	sign;
+	int				sign;
 
 	sign = 1;
 	len = ft_len(n);
 	s = (char *)malloc(sizeof(char) * (len + 1));
 	if (!s)
-		return NULL;
+		return (NULL);
 	s[len--] = '\0';
 	if (n == 0)
 		s[0] = '0';
@@ -80,9 +92,9 @@ La fonction  ft_len  calcule le nombre
 de chiffres necessaires pour representer 
 un entier n en base 10.
 Elle permet,
--le calcul de la chaine necessaire.
--La gestion des negatifs et zero.
--optimiser l'allocation de memoire.
+- le calcul de la chaine necessaire.
+- La gestion des negatifs et zero.
+- optimiser l'allocation de memoire.
 
 La fonction  ft_char  permet de 
 remplir le tableau s avec les chiffres de

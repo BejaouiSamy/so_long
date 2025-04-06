@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/05 17:30:23 by bsamy             #+#    #+#             */
+/*   Updated: 2025/01/06 19:01:22 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_strchr(const char *str, int search_str)
+char	*ft_strchr(const char *s, int c)
 {
-    while (*str != '\0')
-    {
-        if (search_str == *str)
-            return ((char *)str);
-        str++;
-    }
-        return 0;
+	while ((char)c != *s)
+	{
+		if (!*s)
+			return (0);
+		s++;
+	}
+	return ((char *)s);
 }
 /*Cette fonction recherche la premiere occurence
 d'un caractere donnee dans une chaine. Si celui ci

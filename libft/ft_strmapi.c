@@ -1,43 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/05 17:32:34 by bsamy             #+#    #+#             */
+/*   Updated: 2025/01/06 15:04:08 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-#include <stdlib.h>
-
-int	ft_strlen(char *str)
-{
-	int len = 0;
-
-	while (str[len])
-		len++;
-	return len;
-}
-
-char	to_upper(unsigned int index, char c)
-{
-	(void)index; // L'index n'est pas utilisé ici, mais il est passé à la fonction
-	if (c >= 'a' && c <= 'z')
-		return c - 'a' + 'A'; // Convertit une lettre minuscule en majuscule
-	return c;
-}
 
 char	*ft_strmapi(char *s, char (*f)(unsigned int, char))
 {
-	unsigned int i;
-	unsigned int length;
-	char *res;
+	unsigned int	i;
+	unsigned int	length;
+	char			*res;
 
 	if (!s)
-		return NULL;
+		return (NULL);
 	length = ft_strlen(s);
 	res = malloc(length * sizeof(char) + 1);
 	if (!res)
-		return NULL;
+		return (NULL);
 	i = 0;
-	while(i < length)
+	while (i < length)
 	{
 		res[i] = (*f)(i, s[i]);
 		i++;
 	}
 	res[i] = '\0';
-	return(res);
+	return (res);
 }
 /*
 #include <stdio.h>
@@ -70,7 +64,8 @@ int ft_strlen(char *str)
 
 char to_upper(unsigned int index, char c)
 {
-    (void)index; // L'index n'est pas utilisé ici, mais il est passé à la fonction
+    (void)index; //index n'est pas utilisé ici, 
+		 mais il est passé à la fonction
     if (c >= 'a' && c <= 'z')
         return c - 'a' + 'A'; // Convertit une lettre minuscule en majuscule
     return c;

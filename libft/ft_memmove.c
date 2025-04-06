@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/05 17:26:02 by bsamy             #+#    #+#             */
+/*   Updated: 2025/01/05 17:26:38 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stddef.h>
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t i;
+	size_t	i;
 
 	if (!dst && !src)
 		return (0);
@@ -39,7 +51,7 @@ int main() {
 }*/
 /*Cette fonction est une variante de memcpy, mais
 elle est utilisee pour gerer correctement les cas
-ou les zones de memoire (src) et destinantion (dst)
+ou les zones de memoire (src) et destination (dst)
 se chevauchent. Celle ci prend des precautions
 pour garantir que la copie des donnees se fait
 correctement, meme si les zones se chevauchent.*/

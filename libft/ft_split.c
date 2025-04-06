@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/05 17:41:26 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/06 12:58:45 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stdlib.h>
 
@@ -19,16 +31,16 @@ static int	ft_count_words(char const *str, char c)
 
 	i = 0;
 	count = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == c)
 			i++;
 		else
-			{
-				count++;
-				while(str[i] && str[i] != c)
-					i++;
-			}
+		{
+			count++;
+			while (str[i] && str[i] != c)
+				i++;
+		}
 	}
 	return (count);
 }
@@ -38,7 +50,7 @@ static char	*ft_putword(char *word, char const *s, int i, int word_len)
 	int	j;
 
 	j = 0;
-	while(word_len > 0)
+	while (word_len > 0)
 	{
 		word[j] = s[i - word_len];
 		j++;
@@ -57,18 +69,18 @@ static char	**ft_split_words(char const *s, char c, char **s2, int num_words)
 	i = 0;
 	word = 0;
 	word_len = 0;
-	while(word < num_words)
+	while (word < num_words)
 	{
-		while(s[i] && s[i] == c)
+		while (s[i] && s[i] == c)
 			i++;
-		while(s[i] && s[i] != c)
+		while (s[i] && s[i] != c)
 		{
 			i++;
 			word_len++;
 		}
 		s2[word] = (char *)malloc(sizeof(char) * (word_len + 1));
 		if (!s2)
-			return(free_array(s2, word));
+			return (free_array(s2, word));
 		ft_putword(s2[word], s, i, word_len);
 		word_len = 0;
 		word++;
@@ -79,10 +91,10 @@ static char	**ft_split_words(char const *s, char c, char **s2, int num_words)
 
 char	**ft_split(char const *s, char c)
 {
-	char	**s2;
+	char			**s2;
 	unsigned int	num_words;
 
-	if(!s)
+	if (!s)
 		return (0);
 	num_words = ft_count_words(s, c);
 	s2 = (char **)malloc(sizeof(char *) * (num_words + 1));
@@ -98,7 +110,7 @@ int main()
     char **result;
     int i = 0;
 
-    result = ft_split("Hello World 42  C", ' ');
+    result = ft_split("Hello World 42  C", 'l');
     while (result[i])
     {
         printf("%s\n", result[i]);
