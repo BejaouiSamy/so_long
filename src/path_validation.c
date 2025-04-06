@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_validation.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 10:19:26 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 23:23:00 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 // Ajouter un élément à la file d'attente
 void	enqueue(t_queue **queue, int x, int y)
 {
-	t_queue	*new = malloc(sizeof(t_queue));
+	t_queue	*new;
 	t_queue	*temp;
 
+	new = malloc(sizeof(t_queue));
 	if (!new)
-		return;
+		return ;
 	new->x = x;
 	new->y = y;
 	new->next = NULL;
-
 	if (!*queue)
 		*queue = new;
 	else
@@ -29,49 +41,89 @@ void	dequeue(t_queue **queue)
 	t_queue	*temp;
 
 	if (!*queue)
-		return;
+		return ;
 	temp = *queue;
 	*queue = (*queue)->next;
 	free(temp);
 }
 
-// Effectue le parcours en largeur pour vérifier l'accessibilité
-int	bfs(t_game *game, char **visited, int *c_found, int *e_found)
+int	bfs(t_game *game, int **visited
+		, t_counters *counters, int *total_collectibles)
 {
-	int	x;
-	int	y;
-	t_queue	*queue;
+	t_queue		*queue;
+	t_coords	coords;
 
+	*total_collectibles = game->map->collectibles;
 	queue = NULL;
-	enqueue(&queue, game->player.x, game->player.y);
-	visited[game->player.y][game->player.x] = 1;
+	coords.x = game->player.x;
+	coords.y = game->player.y;
+	enqueue(&queue, coords.x, coords.y);
+	visited[coords.y][coords.x] = 1;
 	while (queue)
 	{
-		x = queue->x;
-		y = queue->y;
+		coords.x = queue->x;
+		coords.y = queue->y;
 		dequeue(&queue);
-		process_node(game, visited, x, y, c_found, e_found, &queue);
+		if (game->map->grid[coords.y][coords.x] == 'E')
+			counters->e_found++;
+		else
+		{
+			process_node_check(game, coords, counters);
+			process_node_neighbors(game, visited, coords, &queue);
+		}
 	}
-	return (*c_found == game->map->collectibles && *e_found);
+	return (counters->c_found == *total_collectibles && counters->e_found > 0);
 }
 
 // Fonction principale pour vérifier le chemin
 int	check_path(t_game *game)
 {
-	char	**visited;
-	int	c_found;
-	int	e_found;
+	int			**visited;
+	t_counters	counters;
+	int			total_collectibles;
 
-	c_found = 0;
-	e_found = 0;
+	counters.c_found = 0;
+	counters.e_found = 0;
+	total_collectibles = game->map->collectibles;
 	print_game_info(game);
 	visited = init_visited(game);
-	if (bfs(game, visited, &c_found, &e_found))
+	if (!visited)
+		return (0);
+	if (bfs(game, visited, &counters, &total_collectibles))
 	{
 		free_visited(visited, game->map->height);
 		return (1);
 	}
+	print_path_error(game, &counters, total_collectibles, visited);
 	free_visited(visited, game->map->height);
-	ft_putstr("Erreur: Chemin invalide, objets inaccessibles.\n");
 	return (0);
+}
+
+// Fonction pour vérifier si des collectibles sont inaccessibles
+void	check_unreachable_collectibles(t_game *game, int **visited)
+{
+	int	x;
+	int	y;
+	int	unreachable_count;
+
+	unreachable_count = 0;
+	y = -1;
+	while (++y < game->map->height)
+	{
+		x = -1;
+		while (++x < game->map->width)
+		{
+			if (game->map->grid[y][x] == 'C' && visited[y][x] == 0)
+			{
+				print_error_collectibles(y, x);
+				unreachable_count++;
+			}
+		}
+	}
+	if (unreachable_count > 0)
+	{
+		ft_putstr("Total de ");
+		ft_putnbr(unreachable_count);
+		ft_putstr("collectibles inaccessibles.\n");
+	}
 }

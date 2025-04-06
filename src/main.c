@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 10:13:49 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 10:13:51 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 int	check_file_extension(char *str)
@@ -5,7 +17,7 @@ int	check_file_extension(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i++;
 	while (i >= 0 && str[i] != '.')
 		i--;
@@ -33,7 +45,8 @@ int	initialize_game(t_game *game, char *map_path)
 		return (handle_error("Impossible d'initialiser mlx\n", game));
 	if (!parse_map(game, map_path) || !load_textures(game))
 		return (handle_error("Erreur de parsing ou de textures\n", game));
-	game->win = mlx_new_window(game->mlx, game->map->width * 64, game->map->height * 64, "so_long");
+	game->win = mlx_new_window(game->mlx, game->map->width * 64,
+			game->map->height * 64, "so_long");
 	if (!game->win)
 		return (handle_error("Impossible de créer la fenêtre\n", game));
 	return (0);

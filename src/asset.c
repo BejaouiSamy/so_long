@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   asset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 00:08:04 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 00:11:13 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 void	load_basic_texture_1(t_game *game, int *width, int *height)
@@ -28,35 +40,13 @@ int	load_basic_textures(t_game *game, int *width, int *height)
 	else
 		game->textures.enemy = game->textures.enemy_left;
 	if (!game->textures.wall || !game->textures.floor || !game->textures.player
-			|| !game->textures.gelano || !game->textures.popo
-			|| !game->textures.enemy || !game->textures.glove)
+		|| !game->textures.gelano || !game->textures.popo
+		|| !game->textures.enemy || !game->textures.glove)
 	{
-		ft_putstr("❌ Impossible de charger les textures\n");
+		ft_putstr("Error: ❌ Impossible de charger les textures\n");
 		return (0);
 	}
 	return (1);
-}
-
-void	draw_map_1(t_game *game, int y, int x)
-{
-	if (game->map->grid[y][x] != '1')
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.floor, x * 64, y * 64);
-	if (game->map->grid[y][x] == '1') // Mur
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.wall, x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'C') // Collectible
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.chest_frames[game->chest_current_frame], x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'E') // Sortie
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.exit_frames[game->exit_current_frame], x * 64, y * 64);  // Première frame de l'animation de la sortie
-	else if (game->map->grid[y][x] == 'P') // Joueur
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.player, x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'G') // gelano
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.gelano, x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'O') // popo 
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.popo, x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'T') // glove
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.glove, x * 64, y * 64);
-	else if (game->map->grid[y][x] == 'X') // blob
-		mlx_put_image_to_window(game->mlx, game->win, game->textures.enemy, x * 64, y * 64);
 }
 
 void	draw_map(t_game *game)

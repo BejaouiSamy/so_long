@@ -1,6 +1,6 @@
 NAME = so_long
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 RM = rm -f
 
 # Chemins vers libft et MinilibX
@@ -22,7 +22,8 @@ SRC = main.c get_next.c asset.c \
       input.c parsing.c path_validation.c \
 	  animate_frames_bonus.c extra_parsing_file_2.c \
 	  extra_parsing_file.c enemy_bonus.c get_next_extra.c \
-	  free_functions.c path_validation_extra.c
+	  free_functions.c path_validation_extra.c extra_asset.c \
+	  path_validation_extra_2.c
 SRC_FILES = $(addprefix $(SRC_PATH)/, $(SRC))
 
 # Fichiers objets

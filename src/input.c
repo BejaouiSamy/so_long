@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 10:13:02 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 10:13:03 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
-// Fonction pour deplacer le joueur
 void	move_player(t_game *game, int dx, int dy)
 {
-	int	new_x;
-	int	new_y;
+	int		new_x;
+	int		new_y;
 	char	new_cell;
 
 	new_x = game->player.x + dx;
@@ -55,21 +66,21 @@ int	check_cell(t_game *game, char new_cell)
 {
 	if (handle_collectibles(game, new_cell))
 		return (0);
-	if (new_cell == 'E') 
+	if (new_cell == 'E')
 	{
 		if (game->map->collectibles > 0
-				|| game->map->gelano > 0
-				|| game->map->glove > 0
-				|| game->map->popo > 0)
+			|| game->map->gelano > 0
+			|| game->map->glove > 0
+			|| game->map->popo > 0)
 		{
-			ft_putstr("❌ Vous devez ramasser tous les collectibles avant de sortir !\n");
+			ft_putstr("❌ Vous devez ramasser tous les collectibles!\n");
 			return (1);
 		}
 	}
 	if (new_cell == 'E' && game->map->collectibles == 0
-			&& game->map->gelano == 0
-			&& game->map->glove == 0
-			&& game->map->popo == 0)
+		&& game->map->gelano == 0
+		&& game->map->glove == 0
+		&& game->map->popo == 0)
 	{
 		ft_putstr("Félicitations ! Vous avez gagné !\n");
 		free_game(game);

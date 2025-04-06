@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_extra.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 10:10:11 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 10:10:12 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 int	ft_strlen_until(char *str, char c)
@@ -5,7 +17,7 @@ int	ft_strlen_until(char *str, char c)
 	int	i;
 
 	i = 0;
-	if(!str)
+	if (!str)
 		return (0);
 	while (str[i] && str[i] != c)
 		i++;
@@ -14,9 +26,9 @@ int	ft_strlen_until(char *str, char c)
 
 char	*ft_sstrdup(char *s)
 {
-	int	len;
+	int		len;
 	char	*dup;
-	
+
 	len = ft_strlen_until(s, '\0');
 	dup = malloc(len + 1);
 	if (!dup)
@@ -45,20 +57,20 @@ int	has_char(char *str, char c)
 void	extract_line_1(char **stash, char **line, int *line_len)
 {
 	if (!*stash || !**stash)
-		return;
+		return ;
 	*line_len = ft_strlen_until(*stash, '\n');
 	if ((*stash)[*line_len] == '\n')
 		(*line_len)++;
 	*line = malloc(*line_len + 1);
 	if (!*line)
-		return;
+		return ;
 }
 
 char	*extract_line(char **stash)
 {
 	char	*line;
 	char	*new_stash;
-	int	line_len;
+	int		line_len;
 
 	line = NULL;
 	line_len = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extra_parsing_file.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 00:39:58 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 00:39:59 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 int	check_horizontal_walls(t_game *game)
@@ -9,14 +21,16 @@ int	check_horizontal_walls(t_game *game)
 	{
 		if (game->map->grid[0][x] != '1')
 		{
-			ft_putstr("Erreur: La carte n'est pas entourée de murs (ligne 1, position ");
+			ft_putstr
+				("Error: La carte a besoin de murs (line 1, position ");
 			ft_putnbr(x + 1);
 			ft_putstr(")\n");
 			return (0);
 		}
 		if (game->map->grid[game->map->height - 1][x] != '1')
 		{
-			ft_putstr("Erreur: La carte n'est pas entourée de murs (dernière ligne, position ");
+			ft_putstr
+				("Error: La carte a besoin de murs (last line, position ");
 			ft_putnbr(x + 1);
 			ft_putstr(")\n");
 			return (0);
@@ -31,19 +45,19 @@ int	check_vertical_walls(t_game *game)
 	int	y;
 
 	y = 0;
-
 	while (y < game->map->height)
 	{
 		if (game->map->grid[y][0] != '1')
 		{
-			ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne gauche, ligne ");
+			ft_putstr
+				("Error: La carte a besoin de murs (left col, ligne ");
 			ft_putnbr(y + 1);
 			ft_putstr(")\n");
 			return (0);
 		}
 		if (game->map->grid[y][game->map->width - 1] != '1')
 		{
-			ft_putstr("Erreur: La carte n'est pas entourée de murs (colonne droite, ligne ");
+			ft_putstr("Error: La carte a besoin de murs (right col, ligne ");
 			ft_putnbr(y + 1);
 			ft_putstr(")\n");
 			return (0);
@@ -57,7 +71,8 @@ int	read_map_file(t_game *game, int fd)
 {
 	char	*line;
 
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		if (!add_line_to_map(game, line))
 		{
@@ -66,6 +81,7 @@ int	read_map_file(t_game *game, int fd)
 			return (0);
 		}
 		free(line);
+		line = get_next_line(fd);
 	}
 	return (1);
 }
@@ -76,7 +92,7 @@ int	init_map_structures(t_game *game)
 	if (!game->map)
 	{
 		ft_putstr("Erreur d'allocation memoire");
-		return(0);
+		return (0);
 	}
 	game->map->width = 0;
 	game->map->height = 0;

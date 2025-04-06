@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 09:58:21 by bsamy             #+#    #+#             */
+/*   Updated: 2025/04/05 09:58:22 by bsamy            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Includes/so_long.h"
 
 void	free_textures(t_game *game)
@@ -61,11 +73,11 @@ void	free_map(t_map *map)
 	int	i;
 
 	if (!map)
-		return;
+		return ;
 	i = 0;
 	if (map->grid)
 	{
-		while(i < map->height)
+		while (i < map->height)
 		{
 			free(map->grid[i]);
 			i++;
@@ -75,8 +87,7 @@ void	free_map(t_map *map)
 	free(map);
 }
 
-// Libère la mémoire du tableau de visite
-void	free_visited(char **visited, int height)
+void	free_visited(int **visited, int height)
 {
 	int	y;
 
