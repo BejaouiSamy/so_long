@@ -163,8 +163,8 @@ void	enqueue(t_queue **queue, int x, int y);
 void	dequeue(t_queue **queue);
 int		check_path(t_game *game);
 int		is_valid_position(t_map *map, int x, int y, int **visited);
-void	print_game_info(t_game *game);l
-int		**init_visited(t_game *game);l
+void	print_game_info(t_game *game);
+int		**init_visited(t_game *game);
 void	process_node_check(t_game *game, t_coords coords, t_counters *counters);
 void	process_node_neighbors(t_game *game, int **visited,
 			t_coords coords, t_queue **queue);

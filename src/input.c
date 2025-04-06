@@ -6,7 +6,7 @@
 /*   By: bsamy <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 10:13:02 by bsamy             #+#    #+#             */
-/*   Updated: 2025/04/05 10:13:03 by bsamy            ###   ########.fr       */
+/*   Updated: 2025/04/06 13:47:19 by bsamy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,14 @@ int	key_press(int keycode, t_game *game)
 void	display_steps(t_game *game)
 {
 	char	steps_str[50];
-	char	num_str[20];
+	char	*num_str;
 
-	steps_str[0] = 'P';
-	steps_str[1] = 'a';
-	steps_str[2] = 's';
-	steps_str[3] = ':';
-	steps_str[4] = ' ';
-	steps_str[5] = '\0';
-	ft_itoa_simple(game->steps, num_str);
-	ft_strcat(steps_str, num_str);
-	mlx_string_put(game->mlx, game->win, 10, 20, 0xFFFFFF, steps_str);
+	ft_strlcpy(steps_str, "Pas: ", sizeof(steps_str));
+	num_str = ft_itoa(game->steps);
+	if (num_str)
+	{
+		ft_strlcat(steps_str, num_str, sizeof(steps_str));
+		mlx_string_put(game->mlx, game->win, 10, 20, 0xFFFFFF, steps_str);
+		free(num_str);
+	}
 }
