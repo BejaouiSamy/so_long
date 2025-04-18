@@ -8,9 +8,7 @@ You're a brave (or perhaps just lost) soul trapped in a bizarre map filled with 
 
 ## Gameplay Sneak Peek 🕹️
 
-![Screenshot of your game will go here!]
-
-*(Don't forget to replace this with your awesome game screenshot!)*
+![my_game](my_adventure.png)
 
 ## How to Dive In (Easy Peasy!) ⬇️
 
