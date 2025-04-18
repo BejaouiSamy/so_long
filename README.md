@@ -25,11 +25,11 @@ You're a brave (or perhaps just lost) soul trapped in a bizarre map filled with 
 ## What Makes it Tick? (The Fun Parts!) 😎
 
 * **Retro Vibes:** Enjoy a classic, tile-based gaming experience.
-* **Simple Yet Engaging:** Easy to pick up, but mastering the map takes skill (and maybe a bit of luck).
+* **Simple Yet Engaging:** Easy to pick up, but mastering the map takes skill (it is ?).
 * **Graphical Goodness:** A visual treat (well, a *small* visual treat!) brought to life.
 
 ## Under the Hood (The Techy Bits) ⚙️
 
-* C (because why not?).
+* C.
 * MiniLibX (for all the pixel-pushing and window wizardry).
 
